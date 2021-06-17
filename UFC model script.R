@@ -18,11 +18,23 @@ for( i in 1:length(URLtostats)){
 
 Fighterstatspage<-read_html(as.vector(unique(URLtostats)[[1]]))
 
-#TODO: figure how to get stats from website
-Fighterstatspage%>%
-  html_nodes("li")
-
-
 c<-Fighterstatspage%>%
-  html_nodes("[class='b-list__box-list-item b-list__box-list-item_type_block']")
-str_subset(c,'[:digit:]')
+  html_nodes("li")
+c<-str_replace_all(c,'<.*?>', "")
+c<-str_replace_all(c,'\n', "")
+c<-str_subset(c,"[:digit:]")
+c<-trimws(c)
+
+Lastfight <-Fighterstatspage%>%
+  html_nodes("[class='b-flag__text']")
+Lastfight<-Lastfight[1]
+Lastfight<-str_replace_all(Lastfight,'<.*?>',"")
+
+Record<-Fighterstatspage%>%
+  html_nodes("span")
+Record<-Record[2]
+Record<-str_remove_all(Record,"<.*?>")
+Record<-str_remove_all(Record,"\n")
+Record<-trimws(Record)
+
+#TODO: Put data into Database or Data frame
