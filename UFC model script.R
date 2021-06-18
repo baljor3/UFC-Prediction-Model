@@ -18,12 +18,14 @@ for( i in 1:length(URLtostats)){
 
 Fighterstatspage<-read_html(as.vector(unique(URLtostats)[[1]]))
 
-c<-Fighterstatspage%>%
+StatsofFighter<-Fighterstatspage%>%
   html_nodes("li")
-c<-str_replace_all(c,'<.*?>', "")
-c<-str_replace_all(c,'\n', "")
-c<-str_subset(c,"[:digit:]")
-c<-trimws(c)
+StatsofFighter<-str_replace_all(StatsofFighter,'<.*?>', "")
+StatsofFighter<-str_replace_all(StatsofFighter,'\n', "")
+StatsofFighter<-str_subset(StatsofFighter,"[:digit:]")
+StatsofFighter<-trimws(StatsofFighter)
+StatsofFighter<-str_remove_all(StatsofFighter,"[:punct:]")
+StatsofFighter<-str_remove(StatsofFighter," ")
 
 Lastfight <-Fighterstatspage%>%
   html_nodes("[class='b-flag__text']")
@@ -38,3 +40,11 @@ Record<-str_remove_all(Record,"\n")
 Record<-trimws(Record)
 
 #TODO: Put data into Database or Data frame
+Databaseoffighters<-data.frame(height=c(NA),reach=c(NA),stance=c(NA),slpm=c(NA),stracc=NA,sapm=NA,strdef=NA,tdavg=NA,
+           tdacc=NA, tddef=NA, subavg=NA,Records=NA,WinOrLoss=NA)
+z<-str_replace_all(StatsofFighter,"[:digit:]","")
+z<-str_replace_all(z," ","")
+z<-tolower(z)
+
+x<-vector(mode="list",length = 2)
+
