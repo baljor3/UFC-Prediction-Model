@@ -46,5 +46,18 @@ z<-str_replace_all(StatsofFighter,"[:digit:]","")
 z<-str_replace_all(z," ","")
 z<-tolower(z)
 
+StatsofFighter<-str_replace_all(StatsofFighter,"[:alpha:]","")
+StatsofFighter<-str_replace_all(StatsofFighter," ","")
+
 x<-vector(mode="list",length = 2)
+x[[1]]<-z
+x[[2]]<-StatsofFighter
+
+Databaseoffighters[nrow(Databaseoffighters)+1,] <- NA
+
+if(x[[1]][3] %in% names(Databaseoffighters)){
+  which(names(Databaseoffighters) %in% x[[1]][3])
+  
+  }
+
 
