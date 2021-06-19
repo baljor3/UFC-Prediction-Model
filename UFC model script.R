@@ -15,9 +15,14 @@ URLtostats<-URLUFCStats%>%
 for( i in 1:length(URLtostats)){
   URLtostats[[i]]<-URLtostats[[i]][1]
 }
+URLtostats<-unique(URLtostats)
 
-Fighterstatspage<-read_html(as.vector(unique(URLtostats)[[1]]))
+Databaseoffighters<-data.frame(height=NA,reach=NA,stance=NA,slpm=NA,stracc=NA,sapm=NA,strdef=NA,tdavg=NA,
+                               tdacc=NA, tddef=NA, subavg=NA,wins=NA,losses=NA,lastfight=NA)
+for(i in 1:length(URLtostats)){
+Fighterstatspage<-read_html(URLtostats[[i]])
 
+#Putting data into a data frame
 StatsofFighter<-Fighterstatspage%>%
   html_nodes("li")
 StatsofFighter<-str_replace_all(StatsofFighter,'<.*?>', "")
@@ -38,26 +43,35 @@ Record<-Record[2]
 Record<-str_remove_all(Record,"<.*?>")
 Record<-str_remove_all(Record,"\n")
 Record<-trimws(Record)
+Record<-str_remove_all(Record,"[:alpha:]")
+Record<-str_remove_all(Record,"\\:")
+Record<-str_remove_all(Record," ")
+Wins<-str_extract(Record,"[:digit:]")
+Losses<-str_extract(Record,"-[:digit:]")
+Losses<-str_remove(Loss,"-")
 
-#TODO: Put data into Database or Data frame
-Databaseoffighters<-data.frame(height=c(NA),reach=c(NA),stance=c(NA),slpm=c(NA),stracc=NA,sapm=NA,strdef=NA,tdavg=NA,
-           tdacc=NA, tddef=NA, subavg=NA,Records=NA,WinOrLoss=NA)
-z<-str_replace_all(StatsofFighter,"[:digit:]","")
-z<-str_replace_all(z," ","")
-z<-tolower(z)
+nameofstats<-str_replace_all(StatsofFighter,"[:digit:]","")
+nameofstats<-str_replace_all(nameofstats," ","")
+nameofstats<-tolower(nameofstats)
 
 StatsofFighter<-str_replace_all(StatsofFighter,"[:alpha:]","")
 StatsofFighter<-str_replace_all(StatsofFighter," ","")
 
-x<-vector(mode="list",length = 2)
-x[[1]]<-z
-x[[2]]<-StatsofFighter
+Listofstatsandnames<-vector(mode="list",length = 2)
+Listofstatsandnames[[1]]<-nameofstats
+Listofstatsandnames[[2]]<-StatsofFighter
 
-Databaseoffighters[nrow(Databaseoffighters)+1,] <- NA
+Rowtobeadded<-rep(NA,length(Databaseoffighters))
 
-if(x[[1]][3] %in% names(Databaseoffighters)){
-  which(names(Databaseoffighters) %in% x[[1]][3])
-  
+Rowtobeadded[12]<-Wins
+Rowtobeadded[13]<-Losses
+Rowtobeadded[14]<-Lastfight
+
+for(j in 1:length(Listofstatsandnames[[1]])){
+  if(Listofstatsandnames[[1]][j] %in% names(Databaseoffighters)){
+    Rowtobeadded[which(names(Databaseoffighters) %in% Listofstatsandnames[[1]][j])]<-Listofstatsandnames[[2]][j]
   }
-
+}
+Databaseoffighters<-rbind(Databaseoffighters,Rowtobeadded)
+}
 
