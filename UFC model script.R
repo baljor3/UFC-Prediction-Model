@@ -6,7 +6,7 @@ library(rvest)
 library(dplyr)
 library(stringr)
 
-URLUFCStats <- read_html("http://ufcstats.com/statistics/fighters")
+URLUFCStats <- read_html("http://ufcstats.com/statistics/fighters?char=a&page=all")
 
 URLtostats<-URLUFCStats%>%
   html_nodes(".b-link")%>%
@@ -19,6 +19,9 @@ URLtostats<-unique(URLtostats)
 
 Databaseoffighters<-data.frame(height=NA,reach=NA,stance=NA,slpm=NA,stracc=NA,sapm=NA,strdef=NA,tdavg=NA,
                                tdacc=NA, tddef=NA, subavg=NA,wins=NA,losses=NA,lastfight=NA)
+
+ischarempty<-character(0)
+
 for(i in 1:length(URLtostats)){
 Fighterstatspage<-read_html(URLtostats[[i]])
 
@@ -37,6 +40,10 @@ Lastfight <-Fighterstatspage%>%
 Lastfight<-Lastfight[1]
 Lastfight<-str_replace_all(Lastfight,'<.*?>',"")
 
+if(identical(Lastfight,ischarempty)){
+  Lastfight<-NA
+}
+
 Record<-Fighterstatspage%>%
   html_nodes("span")
 Record<-Record[2]
@@ -46,9 +53,10 @@ Record<-trimws(Record)
 Record<-str_remove_all(Record,"[:alpha:]")
 Record<-str_remove_all(Record,"\\:")
 Record<-str_remove_all(Record," ")
-Wins<-str_extract(Record,"[:digit:]")
-Losses<-str_extract(Record,"-[:digit:]")
-Losses<-str_remove(Loss,"-")
+Wins<-str_extract(Record,"[:digit:].?")
+Wins<-str_remove(Wins,"-")
+Losses<-str_extract(Record,"-[:digit:].?")
+Losses<-str_remove_all(Losses,"-")
 
 nameofstats<-str_replace_all(StatsofFighter,"[:digit:]","")
 nameofstats<-str_replace_all(nameofstats," ","")
@@ -74,4 +82,6 @@ for(j in 1:length(Listofstatsandnames[[1]])){
 }
 Databaseoffighters<-rbind(Databaseoffighters,Rowtobeadded)
 }
+#Databaseoffighters<-Databaseoffighters[-1,]
+
 
