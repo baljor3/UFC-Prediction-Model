@@ -21,7 +21,7 @@ Databaseoffighters<-data.frame(height=NA,reach=NA,stance=NA,slpm=NA,stracc=NA,sa
                                tdacc=NA, tddef=NA, subavg=NA,wins=NA,losses=NA,lastfight=NA)
 
 ischarempty<-character(0)
-
+#TODO:forgot to scrape stances 
 for(i in 1:length(URLtostats)){
 Fighterstatspage<-read_html(URLtostats[[i]])
 
