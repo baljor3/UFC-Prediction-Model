@@ -84,4 +84,13 @@ Databaseoffighters<-rbind(Databaseoffighters,Rowtobeadded)
 }
 #Databaseoffighters<-Databaseoffighters[-1,]
 
+## offcial UFC website scraping
 
+URLUFCStats <- read_html("https://www.ufc.com/athletes/all")
+
+URLtostats<-URLUFCStats%>%
+  html_nodes("")
+#<a href="/athlete/shamil-abdurakhimov" class="e-button--black "><span class="e-button__text">
+  
+ # Athlete Profile
+#</span></a>
