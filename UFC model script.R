@@ -88,11 +88,21 @@ Databaseoffighters<-rbind(Databaseoffighters,Rowtobeadded)
 
 ## official UFC website scraping
 
+# Download binaries, start driver, and get client object.
+rd <- rsDriver(browser = "chrome", port = 4444L)
+ffd <- rd$client
+
+# Navigate to page.
+ffd$navigate("https://www.ufc.com/athletes/all")
+
+# Find the load button and assign, then send click event.
+load_btn <- ffd$findElement(using = "css selector", ".load-more .button")
+load_btn$clickElement()
+
+# Wait for elements to load.
+Sys.sleep(2)
+
 URLUFCStats <- read_html("https://www.ufc.com/athletes/all")
 
 URLtostats<-URLUFCStats%>%
   html_nodes(".e-button--black")
-#<a href="/athlete/shamil-abdurakhimov" class="e-button--black "><span class="e-button__text">
-  
- # Athlete Profile
-#</span></a>
