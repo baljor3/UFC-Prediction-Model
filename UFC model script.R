@@ -1,10 +1,12 @@
 install.packages("rvest")
 install.packages("dplyr")
 install.packages("stringr")
+install.packages("RSelenium")
 
 library(rvest)
 library(dplyr)
 library(stringr)
+library(RSelenium)
 
 URLUFCStats <- read_html("http://ufcstats.com/statistics/fighters?char=a&page=all")
 
