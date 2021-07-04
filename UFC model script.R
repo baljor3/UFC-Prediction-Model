@@ -1,12 +1,21 @@
+# installing packages -----------------------------------------------------
+
+
 install.packages("rvest")
 install.packages("dplyr")
 install.packages("stringr")
 install.packages("RSelenium")
 
+# libraries ---------------------------------------------------------------
+
+
 library(rvest)
 library(dplyr)
 library(stringr)
 library(RSelenium)
+
+# data scraping from third party UFC site ---------------------------------
+
 
 URLUFCStats <- read_html("http://ufcstats.com/statistics/fighters?char=a&page=all")
 
@@ -86,7 +95,8 @@ Databaseoffighters<-rbind(Databaseoffighters,Rowtobeadded)
 }
 #Databaseoffighters<-Databaseoffighters[-1,]
 
-## official UFC website scraping
+
+# UFC official website scraping -------------------------------------------
 
 # Download binaries, start driver, and get client object.
 rd <- rsDriver(browser = "chrome", port = 4444L)
@@ -105,4 +115,66 @@ Sys.sleep(2)
 URLUFCStats <- read_html("https://www.ufc.com/athletes/all")
 
 URLtostats<-URLUFCStats%>%
-  html_nodes(".e-button--black")
+  html_nodes(".e-button--black")%>%
+  html_attrs()
+
+for( i in 1:length(URLtostats)){
+  URLtostats[[i]]<-URLtostats[[i]][1]
+}
+
+UFCLink<- "https://www.ufc.com"
+
+for(i in 1:length(URLtostats)){
+  URLtostats[[i]]<-paste(UFCLink,URLtostats[[i]],sep="")
+}
+
+Fighterstatspage<-read_html(URLtostats[[1]])
+Fighterstatspage%>%
+  html_nodes(".c-record__promoted")%>%
+  str_replace_all("<.*?>","")
+
+Fighterstatspage%>%
+  html_nodes(".e-chart-circle")%>%
+  str_replace_all("<.*?>","")
+
+Fighterstatspage%>%
+  html_nodes(".c-overlap__stats")%>%
+  str_replace_all("<.*?>","")
+
+Fighterstatspage%>%
+  html_nodes(".c-overlap__stats")%>%
+  str_replace_all("<.*?>","")
+
+Fighterstatspage%>%
+  html_nodes(".c-stat-compare__group-1")%>%
+  str_replace_all("<.*?>","")
+
+Fighterstatspage%>%
+  html_nodes(".c-stat-compare__group-2")%>%
+  str_replace_all("<.*?>","")
+
+Fighterstatspage%>%
+  html_nodes(".c-stat-3bar__group")%>%
+  str_replace_all("<.*?>","")
+
+Fighterstatspage%>%
+  html_nodes("#e-stat-body_x5F__x5F_head-txt")%>%
+  str_replace_all("<.*?>","")
+
+Fighterstatspage%>%
+  html_nodes("#e-stat-body_x5F__x5F_body-txt")%>%
+  str_replace_all("<.*?>","")
+
+Fighterstatspage%>%
+  html_nodes("#e-stat-body_x5F__x5F_leg-txt")%>%
+  str_replace_all("<.*?>","")
+
+Fighterstatspage%>%
+  html_nodes(".c-bio__field")%>%
+  str_replace_all("<.*?>","")
+
+#TODO: figure out how to scrape the last fight and figure out if it was a loss 
+# or win. If there is no winner last fight then use the previous fight
+Fighterstatspage%>%
+  html_nodes(".c-card-event--athlete-results__headline")%>%
+  str_replace_all("<.*?>","")
