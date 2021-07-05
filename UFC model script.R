@@ -173,8 +173,18 @@ Fighterstatspage%>%
   html_nodes(".c-bio__field")%>%
   str_replace_all("<.*?>","")
 
+Fighterstatspage%>%
+  html_nodes(".c-hero__headline-suffix")%>%
+  str_replace_all("<.*?>","")
+
 #TODO: figure out how to scrape the last fight and figure out if it was a loss 
 # or win. If there is no winner last fight then use the previous fight
-Fighterstatspage%>%
+locateofname<-Fighterstatspage%>%
   html_nodes(".c-card-event--athlete-results__headline")%>%
   str_replace_all("<.*?>","")
+
+Locateof<-URLtostats[[1]]%>%str_locate("-")
+Nameoffighter<-URLtostats[[1]]%>%str_sub(start=Locateof[1],end = 500)
+Nameoffighter<-str_remove(Nameoffighter,"-")
+
+locateofname[1]%>%word(1)
