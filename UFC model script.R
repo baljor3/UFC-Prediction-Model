@@ -6,6 +6,7 @@ install.packages("dplyr")
 install.packages("stringr")
 install.packages("RSelenium")
 
+
 # libraries ---------------------------------------------------------------
 
 
@@ -13,6 +14,7 @@ library(rvest)
 library(dplyr)
 library(stringr)
 library(RSelenium)
+
 
 # data scraping from third party UFC site ---------------------------------
 
@@ -97,12 +99,14 @@ Databaseoffighters<-rbind(Databaseoffighters,Rowtobeadded)
 
 
 # UFC official website scraping -------------------------------------------
+
 #TODO:figure out Selenium
 # Download binaries, start driver, and get client object.
-rd <- rsDriver(browser = "chrome", port = 4444L)
+rd <- rsDriver(browser = "firefox", port = 4444L)
 ffd <- rd$client
 
 # Navigate to page.
+ffd$open()
 ffd$navigate("https://www.ufc.com/athletes/all")
 
 # Find the load button and assign, then send click event.
