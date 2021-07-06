@@ -97,7 +97,7 @@ Databaseoffighters<-rbind(Databaseoffighters,Rowtobeadded)
 
 
 # UFC official website scraping -------------------------------------------
-
+#TODO:figure out Selenium
 # Download binaries, start driver, and get client object.
 rd <- rsDriver(browser = "chrome", port = 4444L)
 ffd <- rd$client
@@ -177,14 +177,51 @@ Fighterstatspage%>%
   html_nodes(".c-hero__headline-suffix")%>%
   str_replace_all("<.*?>","")
 
-#TODO: figure out how to scrape the last fight and figure out if it was a loss 
-# or win. If there is no winner last fight then use the previous fight
 locateofname<-Fighterstatspage%>%
   html_nodes(".c-card-event--athlete-results__headline")%>%
-  str_replace_all("<.*?>","")
+  str_replace_all("<.*?>","")%>%tolower()
 
 Locateof<-URLtostats[[1]]%>%str_locate("-")
 Nameoffighter<-URLtostats[[1]]%>%str_sub(start=Locateof[1],end = 500)
 Nameoffighter<-str_remove(Nameoffighter,"-")
 
-locateofname[1]%>%word(1)
+
+UpcomingFight<-Fighterstatspage%>%
+  html_nodes(".c-card-event--athlete-results__matchup")%>%
+  str_replace_all("<.*?>","")
+
+if(UpcomingFight[1]%>%trimws()=="Win"){
+  
+
+
+if(locateofname[1]%>%word(1)%>%tolower() == Nameoffighter){
+  Win<-Fighterstatspage%>%
+    html_nodes(".c-card-event--athlete-results__red-image")%>%
+    str_replace_all("<.*?>","")
+  Win<-trimws(Win[1])
+}
+if(locateofname[1]%>%word(3)%>%tolower() == Nameoffighter){
+  Win<-Fighterstatspage%>%
+    html_nodes(".c-card-event--athlete-results__blue-image")%>%
+    str_replace_all("<.*?>","")
+  Win<-trimws(Win[1])
+}
+  
+}else {
+  
+  
+  if(locateofname[1]%>%word(1)%>%tolower() == Nameoffighter){
+    Win<-Fighterstatspage%>%
+      html_nodes(".c-card-event--athlete-results__red-image")%>%
+      str_replace_all("<.*?>","")
+    Win<-trimws(Win[2])
+  }
+  if(locateofname[1]%>%word(3)%>%tolower() == Nameoffighter){
+    Win<-Fighterstatspage%>%
+      html_nodes(".c-card-event--athlete-results__blue-image")%>%
+      str_replace_all("<.*?>","")
+    Win<-trimws(Win[2])
+  }
+  
+}
+
