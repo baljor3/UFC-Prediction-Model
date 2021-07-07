@@ -102,15 +102,14 @@ Databaseoffighters<-rbind(Databaseoffighters,Rowtobeadded)
 
 #TODO:figure out Selenium
 # Download binaries, start driver, and get client object.
-rd <- rsDriver(browser = "firefox", port = 4444L)
+rd <- rsDriver(browser = "firefox", port = 4414L)
 ffd <- rd$client
 
 # Navigate to page.
-ffd$open()
 ffd$navigate("https://www.ufc.com/athletes/all")
 
 # Find the load button and assign, then send click event.
-load_btn <- ffd$findElement(using = "css selector", ".load-more .button")
+load_btn <- ffd$findElement(using = "class name", "button")
 load_btn$clickElement()
 
 # Wait for elements to load.
