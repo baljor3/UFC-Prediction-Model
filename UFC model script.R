@@ -100,6 +100,10 @@ Databaseoffighters<-rbind(Databaseoffighters,Rowtobeadded)
 
 # UFC official website scraping -------------------------------------------
 
+# the number of fighers is 1019 the number of fighers per load is 11. Hence,
+# (1019-11)/11 = 92 this is the total number of times we should load.
+
+for(i in 1:92){
 #TODO:figure out Selenium
 # Download binaries, start driver, and get client object.
 rd <- rsDriver(browser = "firefox", port = 4414L)
@@ -109,12 +113,12 @@ ffd <- rd$client
 ffd$navigate("https://www.ufc.com/athletes/all")
 
 # Find the load button and assign, then send click event.
-load_btn <- ffd$findElement(using = "class name", "button")
+load_btn <- ffd$findElement(using = "class name", "pager__item")
 load_btn$clickElement()
 
 # Wait for elements to load.
 Sys.sleep(2)
-
+}
 URLUFCStats <- read_html("https://www.ufc.com/athletes/all")
 
 URLtostats<-URLUFCStats%>%
