@@ -27,6 +27,10 @@ ffd <- rd$client
 
 # Navigate to page.
 ffd$navigate("https://www.ufc.com/athletes/all")
+
+load_btn <- ffd$findElement(using = "id", "onetrust-accept-btn-handler")
+load_btn$clickElement()
+
 for(i in 1:92){
 
 # Find the load button and assign, then send click event.
