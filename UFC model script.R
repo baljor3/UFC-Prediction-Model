@@ -74,19 +74,52 @@ Fighterstatspage%>%
   str_replace_all("<.*?>","")%>%
   str_remove_all("\n")
 
-Fighterstatspage%>%
+percentofaccuracy<-Fighterstatspage%>%
   html_nodes(".e-chart-circle")%>%
   str_replace_all("<.*?>","")
 
-Fighterstatspage%>%
+percentofaccuracy[1]%>%
+  str_remove("\n")%>%
+  str_remove("[:digit:].*")%>%
+  tolower()%>%
+  str_remove_all(" ")
+
+percentofaccuracy[1]%>%
+  str_remove("\n")%>%
+  str_remove_all("[:alpha:].*?")%>%
+  str_remove("[:digit:]..")%>%
+  str_remove("%")
+
+percentofaccuracy[2]%>%
+  str_remove("\n")%>%
+  str_remove("[:digit:].*")%>%
+  tolower()%>%
+  str_remove_all(" ")
+
+percentofaccuracy[2]%>%
+  str_remove("\n")%>%
+  str_remove_all("[:alpha:].*?")%>%
+  str_remove("[:digit:]..")%>%
+  str_remove("%")
+  
+LandandAttempted<-Fighterstatspage%>%
   html_nodes(".c-overlap__stats")%>%
   str_replace_all("<.*?>","")
 
-Fighterstatspage%>%
-  html_nodes(".c-overlap__stats")%>%
-  str_replace_all("<.*?>","")
+LandandAttempted[1]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")%>%
+  str_remove_all("\\.")%>%
+  str_locate_all("[[:digit:]]+")
 
-Fighterstatspage%>%
+LandandAttempted[2]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")%>%
+  str_remove_all("\\.")%>%
+  str_locate_all("[[:digit:]]+")
+
+
+statsOne<-Fighterstatspage%>%
   html_nodes(".c-stat-compare__group-1")%>%
   str_replace_all("<.*?>","")
 
