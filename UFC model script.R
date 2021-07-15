@@ -31,6 +31,8 @@ ffd$navigate("https://www.ufc.com/athletes/all")
 load_btn <- ffd$findElement(using = "id", "onetrust-accept-btn-handler")
 load_btn$clickElement()
 
+Sys.sleep(2)
+
 for(i in 1:92){
 
 # Find the load button and assign, then send click event.
@@ -38,7 +40,7 @@ load_btn <- ffd$findElement(using = "class name", "pager__item")
 load_btn$clickElement()
 
 # Wait for elements to load.
-Sys.sleep(2)
+Sys.sleep(10)
 }
 
 #to get the current page with all the loaded fighters.
@@ -61,6 +63,11 @@ for(i in 1:length(URLtostats)){
 }
 
 ffd$navigate(URLtostats[[1]])
+
+load_btn <- ffd$findElement(using = "id", "onetrust-accept-btn-handler")
+load_btn$clickElement()
+
+Sys.sleep(2)
 
 load_btn <- ffd$findElement(using = "class name", "e-button--white")
 load_btn$clickElement()
@@ -106,30 +113,99 @@ LandandAttempted<-Fighterstatspage%>%
   html_nodes(".c-overlap__stats")%>%
   str_replace_all("<.*?>","")
 
-LandandAttempted[1]%>%
+LandandAttempted[1]<-LandandAttempted[1]%>%
   str_remove_all("\n")%>%
   str_remove_all("[:alpha:]")%>%
-  str_remove_all("\\.")%>%
-  str_locate_all("[[:digit:]]+")
+  str_remove_all("\\.")
+  
+str_sub(LandandAttempted[1],str_locate_all(LandandAttempted[1],"[[:digit:]]+")[[1]][1],str_locate_all(LandandAttempted[1],"[[:digit:]]+")[[1]][3])
+str_sub(LandandAttempted[1],str_locate_all(LandandAttempted[1],"[[:digit:]]+")[[1]][2],str_locate_all(LandandAttempted[1],"[[:digit:]]+")[[1]][4])
 
-LandandAttempted[2]%>%
+LandandAttempted[2]<-LandandAttempted[2]%>%
   str_remove_all("\n")%>%
   str_remove_all("[:alpha:]")%>%
-  str_remove_all("\\.")%>%
-  str_locate_all("[[:digit:]]+")
+  str_remove_all("\\.")
 
+str_sub(LandandAttempted[2],str_locate_all(LandandAttempted[2],"[[:digit:]]+")[[1]][1],str_locate_all(LandandAttempted[2],"[[:digit:]]+")[[1]][3])
+str_sub(LandandAttempted[2],str_locate_all(LandandAttempted[2],"[[:digit:]]+")[[1]][2],str_locate_all(LandandAttempted[2],"[[:digit:]]+")[[1]][4])
 
 statsOne<-Fighterstatspage%>%
   html_nodes(".c-stat-compare__group-1")%>%
   str_replace_all("<.*?>","")
 
-Fighterstatspage%>%
+#sig. str. landed per min
+statsOne[1]<-statsOne[1]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")
+
+str_sub(statsOne[1],str_locate_all(statsOne[1],"[[:digit:]]+")[[1]][1],str_locate_all(statsOne[1],"[[:digit:]]+")[[1]][4])
+
+#Takedown avg per 15 min
+statsOne[2]<-statsOne[2]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")%>%
+  str_locate_all("[[:digit:]]+")
+
+str_sub(statsOne[2],str_locate_all(statsOne[2],"[[:digit:]]+")[[1]][1],str_locate_all(statsOne[2],"[[:digit:]]+")[[1]][5])
+#Sig. Str. Defense %
+statsOne[3]<-statsOne[3]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")
+
+str_sub(statsOne[3],str_locate_all(statsOne[3],"[[:digit:]]+")[[1]][1],str_locate_all(statsOne[3],"[[:digit:]]+")[[1]][2])
+#Knockdown Ratio
+statsOne[4]<-statsOne[4]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")
+
+str_sub(statsOne[4],str_locate_all(statsOne[4],"[[:digit:]]+")[[1]][1],str_locate_all(statsOne[4],"[[:digit:]]+")[[1]][4])
+
+statsTwo<-Fighterstatspage%>%
   html_nodes(".c-stat-compare__group-2")%>%
   str_replace_all("<.*?>","")
+#Sig. Str. Absorbed
+statsTwo[1]<-statsTwo[1]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")
 
-Fighterstatspage%>%
+str_sub(statsTwo[1],str_locate_all(statsTwo[1],"[[:digit:]]+")[[1]][1],str_locate_all(statsTwo[1],"[[:digit:]]+")[[1]][4])
+#Submission avg
+statsTwo[2]<-statsTwo[2]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")
+
+str_sub(statsTwo[2],str_locate_all(statsTwo[2],"[[:digit:]]+")[[1]][1],str_locate_all(statsTwo[2],"[[:digit:]]+")[[1]][5])
+
+#Takedown Defense %
+statsTwo[3]<-statsTwo[3]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")
+
+str_sub(statsTwo[3],str_locate_all(statsTwo[3],"[[:digit:]]+")[[1]][1],str_locate_all(statsTwo[3],"[[:digit:]]+")[[1]][2])
+
+#Average fight time
+statsTwo[4]<-statsTwo[4]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")
+
+str_sub(statsTwo[4],str_locate_all(statsTwo[4],"[[:digit:]]+")[[1]][1],str_locate_all(statsTwo[4],"[[:digit:]]+")[[1]][4])
+
+StatsThree<-Fighterstatspage%>%
   html_nodes(".c-stat-3bar__group")%>%
   str_replace_all("<.*?>","")
+
+StatsThree[1]<-StatsThree[1]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")
+
+#SIG. STR. BY POSITION standing
+str_sub(StatsThree[1],str_locate_all(StatsThree[1],"[[:digit:]]+")[[1]][1],str_locate_all(StatsThree[1],"[[:digit:]]+")[[1]][3])
+#percentage
+str_sub(StatsThree[1],str_locate_all(StatsThree[1],"[[:digit:]]+")[[1]][2],str_locate_all(StatsThree[1],"[[:digit:]]+")[[1]][4])
+
+StatsThree[1]<-StatsThree[1]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")
 
 Fighterstatspage%>%
   html_nodes("#e-stat-body_x5F__x5F_head-txt")%>%
