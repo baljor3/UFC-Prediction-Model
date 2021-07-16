@@ -203,29 +203,107 @@ str_sub(StatsThree[1],str_locate_all(StatsThree[1],"[[:digit:]]+")[[1]][1],str_l
 #percentage
 str_sub(StatsThree[1],str_locate_all(StatsThree[1],"[[:digit:]]+")[[1]][2],str_locate_all(StatsThree[1],"[[:digit:]]+")[[1]][4])
 
-StatsThree[1]<-StatsThree[1]%>%
+StatsThree[2]<-StatsThree[2]%>%
   str_remove_all("\n")%>%
   str_remove_all("[:alpha:]")
 
-Fighterstatspage%>%
+#SIG. STR. BY POSITION Clinch
+str_sub(StatsThree[2],str_locate_all(StatsThree[2],"[[:digit:]]+")[[1]][1],str_locate_all(StatsThree[2],"[[:digit:]]+")[[1]][3])
+#percentage
+str_sub(StatsThree[2],str_locate_all(StatsThree[2],"[[:digit:]]+")[[1]][2],str_locate_all(StatsThree[2],"[[:digit:]]+")[[1]][4])
+
+StatsThree[3]<-StatsThree[3]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")
+
+#SIG. STR. BY POSITION ground
+str_sub(StatsThree[3],str_locate_all(StatsThree[3],"[[:digit:]]+")[[1]][1],str_locate_all(StatsThree[3],"[[:digit:]]+")[[1]][3])
+#percentage
+str_sub(StatsThree[3],str_locate_all(StatsThree[3],"[[:digit:]]+")[[1]][2],str_locate_all(StatsThree[3],"[[:digit:]]+")[[1]][4])
+
+StatsThree[4]<-StatsThree[4]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")
+
+#SIG. STR. BY POSITION WINS BY KO 
+str_sub(StatsThree[4],str_locate_all(StatsThree[4],"[[:digit:]]+")[[1]][1],str_locate_all(StatsThree[4],"[[:digit:]]+")[[1]][3])
+#percentage
+str_sub(StatsThree[4],str_locate_all(StatsThree[4],"[[:digit:]]+")[[1]][2],str_locate_all(StatsThree[4],"[[:digit:]]+")[[1]][4])
+
+StatsThree[5]<-StatsThree[5]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")
+
+#SIG. STR. BY POSITION WINS BY DEC
+str_sub(StatsThree[5],str_locate_all(StatsThree[5],"[[:digit:]]+")[[1]][1],str_locate_all(StatsThree[5],"[[:digit:]]+")[[1]][3])
+#percentage
+str_sub(StatsThree[5],str_locate_all(StatsThree[5],"[[:digit:]]+")[[1]][2],str_locate_all(StatsThree[5],"[[:digit:]]+")[[1]][4])
+
+StatsThree[6]<-StatsThree[6]%>%
+  str_remove_all("\n")%>%
+  str_remove_all("[:alpha:]")
+
+#SIG. STR. BY POSITION WINS BY SUB
+str_sub(StatsThree[6],str_locate_all(StatsThree[6],"[[:digit:]]+")[[1]][1],str_locate_all(StatsThree[6],"[[:digit:]]+")[[1]][3])
+#percentage
+str_sub(StatsThree[6],str_locate_all(StatsThree[6],"[[:digit:]]+")[[1]][2],str_locate_all(StatsThree[6],"[[:digit:]]+")[[1]][4])
+
+strikestohead<-Fighterstatspage%>%
   html_nodes("#e-stat-body_x5F__x5F_head-txt")%>%
   str_replace_all("<.*?>","")
 
-Fighterstatspage%>%
+#percentage
+str_sub(strikestohead, str_locate_all(strikestohead,"[[:digit:]]+")[[1]][1],str_locate_all(strikestohead,"[[:digit:]]+")[[1]][3])
+#values
+str_sub(strikestohead, str_locate_all(strikestohead,"[[:digit:]]+")[[1]][2],str_locate_all(strikestohead,"[[:digit:]]+")[[1]][4])
+
+strikestobody<-Fighterstatspage%>%
   html_nodes("#e-stat-body_x5F__x5F_body-txt")%>%
   str_replace_all("<.*?>","")
 
-Fighterstatspage%>%
+#percentage
+str_sub(strikestobody, str_locate_all(strikestobody,"[[:digit:]]+")[[1]][1],str_locate_all(strikestobody,"[[:digit:]]+")[[1]][3])
+#values
+str_sub(strikestobody, str_locate_all(strikestobody,"[[:digit:]]+")[[1]][2],str_locate_all(strikestobody,"[[:digit:]]+")[[1]][4])
+
+strikestolegs<-Fighterstatspage%>%
   html_nodes("#e-stat-body_x5F__x5F_leg-txt")%>%
   str_replace_all("<.*?>","")
 
-Fighterstatspage%>%
+#percentage
+str_sub(strikestolegs, str_locate_all(strikestolegs,"[[:digit:]]+")[[1]][1],str_locate_all(strikestolegs,"[[:digit:]]+")[[1]][3])
+#values
+str_sub(strikestolegs, str_locate_all(strikestolegs,"[[:digit:]]+")[[1]][2],str_locate_all(strikestolegs,"[[:digit:]]+")[[1]][4])
+
+biostats<-Fighterstatspage%>%
   html_nodes(".c-bio__field")%>%
-  str_replace_all("<.*?>","")
+  str_replace_all("<.*?>","")%>%
+  str_remove_all("\n")
+
+for(i in 1:length(biostats)){
+  
+  if("Age" == str_sub(biostats[i],str_locate_all(biostats[i],"[[:alpha:]]+")[[1]][1],str_locate_all(biostats[i],"[[:alpha:]]+")[[1]][2])){
+  
+  }
+  
+  if("Height" == str_sub(biostats[i],str_locate_all(biostats[i],"[[:alpha:]]+")[[1]][1],str_locate_all(biostats[i],"[[:alpha:]]+")[[1]][2])){
+    
+  }
+  
+  if("Reach" == str_sub(biostats[i],str_locate_all(biostats[i],"[[:alpha:]]+")[[1]][1],str_locate_all(biostats[i],"[[:alpha:]]+")[[1]][2])){
+    
+  }
+  
+  if("Leg reach" == str_sub(biostats[i],str_locate_all(biostats[i],"[[:alpha:]]+")[[1]][1],str_locate_all(biostats[i],"[[:alpha:]]+")[[1]][2])){
+    
+  }
+  
+}
 
 Fighterstatspage%>%
   html_nodes(".c-hero__headline-suffix")%>%
-  str_replace_all("<.*?>","")
+  str_replace_all("<.*?>","")%>%
+  str_remove_all("\n")
 
 locateofname<-Fighterstatspage%>%
   html_nodes(".c-card-event--athlete-results__headline")%>%
